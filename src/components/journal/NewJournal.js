@@ -19,7 +19,7 @@ export const NewJournal = () => {
   };
 
   return (
-    <div className='px-4 py-4 bg-gray-100 border rounded-sm'>
+    <div className='px-4 py-4 bg-gray-100 rounded-sm shadow'>
       <form onSubmit={handleAddNew}>
         <label htmlFor='journal'>
           <input 

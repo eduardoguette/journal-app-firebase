@@ -8,9 +8,9 @@ import { useForm } from '../../hooks/useForm'
 import { removeError, setError } from '../../actions/ui'
 
 export const LoginScreen = () => {
-  const [formValues, handleInputChange, reset] = useForm({
-    email: 'eduardo@gmail.com',
-    password: '123456',
+  const [formValues, handleInputChange] = useForm({
+    email: '',
+    password: '',
   })
 
   const dispatch = useDispatch()
@@ -49,7 +49,7 @@ export const LoginScreen = () => {
         <div className='mt-4 mb-2'>
           <p className='font-semibold'>Login with social networks</p>
         </div>
-        <button className='flex items-center justify-center gap-2 px-5 py-3 text-sm font-semibold border border-gray-200 rounded-full hover:bg-gray-50' onClick={hadleGoogleLogin}>
+        <button className='flex items-center justify-center gap-2 px-5 py-3 text-sm font-semibold border border-gray-200 rounded hover:bg-gray-50' onClick={hadleGoogleLogin}>
           <img src={iconGoogle} alt='Icono de google' height={24} width={24} />
           Sign in with google
         </button>
@@ -65,7 +65,7 @@ export const LoginScreen = () => {
           Email
         </label>
         <input
-          className='px-5 py-3 text-sm border rounded-full focus:outline-indigo-500'
+          className='px-5 py-3 text-sm border rounded focus:outline-indigo-500'
           type='text'
           autoComplete='off'
           placeholder='Email'
@@ -78,7 +78,7 @@ export const LoginScreen = () => {
           Password
         </label>
         <input
-          className='px-5 py-3 text-sm border rounded-full focus:outline-indigo-500'
+          className='px-5 py-3 text-sm border rounded focus:outline-indigo-500'
           type='password'
           id='password'
           placeholder='Password'
@@ -92,7 +92,7 @@ export const LoginScreen = () => {
         </Link>
         <button
           disabled={loading}
-          className='flex items-center justify-center px-5 py-3 mt-2 font-semibold text-white bg-indigo-500 rounded-full disabled:cursor-not-allowed disabled:bg-indigo-400 focus:outline-indigo-300 hover:bg-indigo-600'
+          className='flex items-center justify-center px-5 py-3 mt-2 font-semibold text-white bg-indigo-500 rounded disabled:cursor-not-allowed disabled:bg-indigo-400 focus:outline-indigo-300 hover:bg-indigo-600'
           type='submit'
         >
           {!loading ? (

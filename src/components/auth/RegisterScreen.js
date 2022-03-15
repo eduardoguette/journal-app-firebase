@@ -8,11 +8,11 @@ import { removeError, setError } from '../../actions/ui'
 import { useForm } from '../../hooks/useForm'
 
 export const RegisterScreen = () => {
-  const [formValues, handleInputChange, reset] = useForm({
-    name: 'Eduardo',
-    email: 'eduard111111o@gmail.com',
-    password: '123456',
-    password2: '123456',
+  const [formValues, handleInputChange] = useForm({
+    name: '',
+    email: '',
+    password: '',
+    password2: '',
   })
   const { name, email, password, password2 } = formValues
 
@@ -60,7 +60,7 @@ export const RegisterScreen = () => {
         <input
           onChange={handleInputChange}
           value={name}
-          className='px-5 py-3 text-sm border rounded-full focus:outline-indigo-500'
+          className='px-5 py-3 text-sm border rounded focus:outline-indigo-500'
           type='text'
           autoComplete='off'
           placeholder='Name'
@@ -73,7 +73,7 @@ export const RegisterScreen = () => {
         <input
           onChange={handleInputChange}
           value={email}
-          className='px-5 py-3 text-sm border rounded-full focus:outline-indigo-500'
+          className='px-5 py-3 text-sm border rounded focus:outline-indigo-500'
           type='text'
           autoComplete='off'
           placeholder='Email'
@@ -86,7 +86,7 @@ export const RegisterScreen = () => {
         <input
           onChange={handleInputChange}
           value={password}
-          className='px-5 py-3 text-sm border rounded-full focus:outline-indigo-500'
+          className='px-5 py-3 text-sm border rounded focus:outline-indigo-500'
           type='password'
           id='password'
           placeholder='Password'
@@ -99,14 +99,14 @@ export const RegisterScreen = () => {
         <input
           onChange={handleInputChange}
           value={password2}
-          className='px-5 py-3 text-sm border rounded-full focus:outline-indigo-500'
+          className='px-5 py-3 text-sm border rounded focus:outline-indigo-500'
           type='password'
           id='password2'
           placeholder='Confirm password'
           name='password2'
           autoComplete='off'
         />
-        <button className='px-5 py-3 mt-2 font-semibold text-white bg-indigo-500 rounded-full focus:outline-indigo-300 hover:bg-indigo-600' type='submit'>
+        <button className='px-5 py-3 mt-2 font-semibold text-white bg-indigo-500 rounded focus:outline-indigo-300 hover:bg-indigo-600' type='submit'>
           Register
         </button>
         {msgError && (

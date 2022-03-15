@@ -1,6 +1,5 @@
 import Swal from 'sweetalert2';
-import { db } from '../firebase/firebase-config';
-import { debounce } from '../helpers/debounce';
+import { db } from '../firebase/firebase-config'; 
 import { fileUpload } from '../helpers/fileUpload';
 import { loadNotes } from '../helpers/loadNotes';
 import { types } from '../types/types';
@@ -17,6 +16,9 @@ export const startNewNote = (title) => {
       body: '',
       date: new Date().getTime(),
       url: null,
+      import: false, 
+      category: [], 
+      steps:[]
     };
 
     const doc = await db.collection(`${uid}/journal/notes`).add(newNote);
@@ -27,16 +29,16 @@ export const startNewNote = (title) => {
   };
 };
 
-export const updateNote = () => {
-  return async (dispatch, getState) => {
-    const { active } = getState().notes;
-    const updatedNote = {
-      title: '',
-      body: '',
-      date: new Date().getTime(),
-    };
-  };
-};
+// export const updateNote = () => {
+//   return async (dispatch, getState) => {
+//     const { active } = getState().notes;
+//     const updatedNote = {
+//       title: '',
+//       body: '',
+//       date: new Date().getTime(),
+//     };
+//   };
+// };
 
 export const activeNote = (id, note) => {
   return {
