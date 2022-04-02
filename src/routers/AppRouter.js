@@ -10,6 +10,9 @@ import { PrivateRoute } from './PrivateRoute';
 import { PublicRoute } from './PublicRoute';
 import { startLoadingNotes } from '../actions/notes';
 import { Loader } from '../components/ui/Loader';
+import toast, { Toaster } from 'react-hot-toast';
+
+
 export const AppRouter = () => {
   const dispatch = useDispatch();
 
@@ -35,6 +38,7 @@ export const AppRouter = () => {
 
   return (
     <Router>
+      <Toaster/>
       <Switch>
         <PublicRoute isAuthenticated={isLoggedIn} path='/auth' component={AuthRouter} />
 

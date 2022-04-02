@@ -1,33 +1,37 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
 import { activeNote } from '../../actions/notes';
+import iconAttachment from '../../assets/icons/attach.svg';
 import { mymoment } from '../../helpers/mymoment';
 import { Tag } from './Tag';
-import iconAttachment from '../../assets/icons/attach.svg'
 
-export const Note = ({ id, title, date, body, url, setViewJournal }) => {
+export const Note = React.memo(({ id, title, date, body, url, done, important, steps, category, setViewJournal, viewJournal }) => {
   const dispatch = useDispatch();
+
   const handleNoteClick = (e) => {
-    e.preventDefault();
-    setViewJournal(true);
+    e.preventDefault(e);
     dispatch(
       activeNote(id, {
-        body,
-        title,
-        date,
         id,
+        title,
+        body,
+        date,
         url,
+        done,
+        important,
+        steps,
+        category,
       })
     );
-
+    setViewJournal(true);
     // dispatch(startNewNote());
   };
 
   return (
     <>
-      <article onClick={handleNoteClick} className='px-4 py-2 border-b cursor-pointer hover:bg-indigo-100' key={id}>
+      <article onClick={handleNoteClick} className={`px-4 py-2 border-b cursor-pointer hover:bg-indigo-100 `}>
         <div className='py-1 '>
-          <p className='font-light'>{title === '' ? 'Nota sin titulo' : title}</p>
+          <p className={`${done && 'text-gray-500 line-through'}`}>{title === '' ? 'Nota sin titulo' : title}</p>
         </div>
         <footer className='flex flex-wrap items-center gap-1'>
           <div className='flex items-center gap-2'>
@@ -36,14 +40,21 @@ export const Note = ({ id, title, date, body, url, setViewJournal }) => {
             </svg>
             <span className='mr-2 text-xs font-light'> {mymoment(date)} </span>
           </div>
-          
-          {url && <><span>·</span><div className="flex items-center text-xs font-light">
-            <img src={iconAttachment} alt="Icon attachment" className="w-4 h-4" />
-            Attached files </div> <span>·</span>  </>}
-         
+
+          {url && (
+            <>
+              <span>·</span>
+              <div className='flex items-center text-xs font-light'>
+                <img src={iconAttachment} alt='Icon attachment' className='w-4 h-4' />
+                Attached files{' '}
+              </div>{' '}
+              <span>·</span>{' '}
+            </>
+          )}
+
           <Tag />
         </footer>
       </article>
     </>
   );
-};
+});

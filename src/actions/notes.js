@@ -1,10 +1,9 @@
-import Swal from 'sweetalert2';
-import { db } from '../firebase/firebase-config'; 
+import { db } from '../firebase/firebase-config';
 import { fileUpload } from '../helpers/fileUpload';
 import { loadNotes } from '../helpers/loadNotes';
 import { types } from '../types/types';
 import { finishLoading, startLoading } from './ui';
-
+import toast from 'react-hot-toast';
 //react-journal
 
 export const startNewNote = (title) => {
@@ -16,14 +15,14 @@ export const startNewNote = (title) => {
       body: '',
       date: new Date().getTime(),
       url: null,
-      import: false, 
-      category: [], 
-      steps:[]
+      steps: [],
+      important: false,
+      category: [],
+      done: false,
     };
 
     const doc = await db.collection(`${uid}/journal/notes`).add(newNote);
-
-    Swal.fire('Saved', 'Saved succesfull!');
+    toast.success('Saved succesfull!');
     dispatch(activeNote(doc.id, newNote));
     dispatch(pushNote({ ...newNote, id: doc.id }));
   };
@@ -41,6 +40,7 @@ export const startNewNote = (title) => {
 // };
 
 export const activeNote = (id, note) => {
+ 
   return {
     type: types.notesActive,
     payload: {
@@ -49,6 +49,9 @@ export const activeNote = (id, note) => {
     },
   };
 };
+
+
+
 export const disabledNote = () => {
   return {
     type: types.notesDisabled,
@@ -58,14 +61,14 @@ export const disabledNote = () => {
 export const startSaveNotes = (note) => {
   return async (dispatch, getState) => {
     const { uid } = getState().auth;
+
     const noteToFireStore = { ...note };
-    console.log('SI');
     try {
       await db.doc(`${uid}/journal/notes/${note.id}`).update(noteToFireStore);
       dispatch(refreshNote(note.id, noteToFireStore));
-      Swal.fire('Success', note.title, 'success');
+      toast.success('Saved note!');
     } catch (error) {
-      Swal.fire('Error', note.title, 'error');
+      toast.error("This didn't work.");
     }
   };
 };
@@ -108,19 +111,13 @@ export const pushNote = (note) => {
 export const startUploading = (file) => {
   return async (dispatch, getState) => {
     const { active: activeNote } = getState().notes;
-    Swal.fire({
-      title: 'Uploading...',
-      text: 'Please wait...',
-      allowOutsideClick: false,
-      didOpen: () => {
-        Swal.showLoading();
-      },
-    });
+
+    toast.loading('Uploading file...');
 
     const fileUrl = await fileUpload(file);
     activeNote.url = fileUrl;
     dispatch(startSaveNotes(activeNote));
-    Swal.close();
+    toast.dismiss();
   };
 };
 
@@ -137,7 +134,6 @@ export const deleteNote = (id) => ({
   payload: id,
 });
 
-
 export const noteLogout = () => ({
-  type: types.notesLogoutCleaning
-})
+  type: types.notesLogoutCleaning,
+});

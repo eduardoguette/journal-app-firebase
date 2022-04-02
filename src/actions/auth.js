@@ -1,4 +1,4 @@
-import Swal from 'sweetalert2' 
+import toast from 'react-hot-toast';
 import { firebase, googleAuthProvider } from '../firebase/firebase-config'
 import { types } from '../types/types'
 import { noteLogout } from './notes'
@@ -17,7 +17,7 @@ export const startLoginEmailPassword = (email, password) => {
       })
       .catch((err) => {
         dispatch(finishLoading())
-        Swal.fire('Error', err.message, 'error')
+        toast.error(err.message) 
       })
   }
 }
@@ -32,7 +32,7 @@ export const startRegisterWithEmailPasswordName = (email, password, name) => {
         dispatch(login(user.uid, user.displayName))
       })
       .catch((err) => {
-        Swal.fire('Error', err.message, 'error')
+        toast.error(err.message) 
       })
   }
 }

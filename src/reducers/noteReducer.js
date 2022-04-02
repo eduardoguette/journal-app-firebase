@@ -2,14 +2,17 @@ import { types } from '../types/types';
 
 /* 
   {
-    note:[],
+    notes:[],
     active:null,
     active: {
-      id:"19023812312asdasd3",
-      title: "",
-      body: "",
-      imageUrl: "",
-      date: 2190382131,
+            title: title,
+      body: '',
+      date: new Date().getTime(),
+      url: null,
+      steps:[],
+      important: false, 
+      category: [],  
+      done: false
     }
   }
 
@@ -21,11 +24,11 @@ const initialState = {
 
 export const notesReducer = (state = initialState, action) => {
   switch (action.type) {
-    case types.notesActive:
+    case types.notesActive:  
       return {
         ...state,
         active: {
-          ...action.payload,
+          ...action.payload, 
         },
       };
 
@@ -35,6 +38,7 @@ export const notesReducer = (state = initialState, action) => {
         notes: [...action.payload],
       };
     case types.notesDisabled:
+
       return {
         ...state,
         active: null,
@@ -45,6 +49,7 @@ export const notesReducer = (state = initialState, action) => {
         notes: state.notes.map((note) => (note.id === action.payload.id ? action.payload.note : note)),
       };
     case types.notesPush:
+ 
       return {
         ...state,
         notes: [...state.notes, action.payload],
@@ -57,10 +62,11 @@ export const notesReducer = (state = initialState, action) => {
       };
 
     case types.notesLogoutCleaning:
+
       return {
         ...state,
         active: null,
-        notes:[]
+        notes: [],
       };
     default:
       return state;

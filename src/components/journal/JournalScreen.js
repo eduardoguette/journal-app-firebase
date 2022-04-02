@@ -1,13 +1,12 @@
-import React, { useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
-
-import { NewJournal } from './NewJournal';
-import { SideBar } from './SideBar';
+import React, { useState } from 'react';
 import svgHamburger from '../../assets/icons/hamburger.svg';
 import { NoteScreen } from '../notes/NoteScreen';
-import { ListNotes } from './ListNotes';
-import { Date } from './Date';
 import { UserMenu } from '../ui/UserMenu';
+import { Date } from './Date';
+import { ListNotes } from './ListNotes';
+import { NewJournal } from './NewJournal';
+import { SideBar } from './SideBar';
 
 export const JournalScreen = () => {
   const [viewSideBar, setViewSideBar] = useState(false);
@@ -32,7 +31,7 @@ export const JournalScreen = () => {
           <Date />
           <div className='grid gap-2 mt-4'>
             <NewJournal />
-            <ListNotes setViewJournal={setViewJournal} />
+            <ListNotes viewJournal={viewJournal} setViewJournal={setViewJournal} />
           </div>
         </main>
         <AnimatePresence>{viewJournal && <NoteScreen layout setViewJournal={setViewJournal} />}</AnimatePresence>
