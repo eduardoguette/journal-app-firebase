@@ -1,5 +1,6 @@
-export const mymoment = (date_note) => {
-  const date = new Intl.DateTimeFormat('es', { dateStyle: 'long' });
+export const mymoment = (date_note = Date.now()) => {
+
+  const date = new Intl.DateTimeFormat('en-US', { dateStyle: 'long' });
 
   if (typeof date_note === 'number') return date.format(new Date(date_note));
 };

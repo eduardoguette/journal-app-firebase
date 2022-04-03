@@ -24,7 +24,7 @@ export const JournalScreen = () => {
                   <img src={svgHamburger} className='w-5 h-5 pointer-events-none' alt='Icono menu hamburguesa' />
                 </button>
               )}
-              <h1 className='text-2xl '>Mi día</h1>
+              <h1 className='text-2xl '>My day</h1>
             </div>
             <UserMenu />
           </div>

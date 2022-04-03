@@ -24,7 +24,7 @@ export const NewJournal = () => {
         <label htmlFor='journal'>
           <input 
             className='w-full px-4 py-2 text-sm font-light border-b focus:outline-none border-b-indigo-500 focus:border-b-indigo-700' 
-            placeholder='Nueva tarea' 
+            placeholder='Add a task' 
             name="note"
             value={note} 
             onChange={handleInputChange} 
@@ -32,7 +32,7 @@ export const NewJournal = () => {
         </label>
         <div className='mt-2'>
           <button type='submit' className='block px-4 py-2 ml-auto text-sm font-semibold'>
-            Agregar
+            Add
           </button>
         </div>
       </form>

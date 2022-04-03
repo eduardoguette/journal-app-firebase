@@ -71,7 +71,7 @@ export const NoteScreen = ({ setViewJournal }) => {
   };
 
   const handleAddStep = () => {
-    setViewAddStep(false)
+    setViewAddStep(false);
     const stepActive = {
       id: Date.now(),
       titleStep: '',
@@ -89,7 +89,6 @@ export const NoteScreen = ({ setViewJournal }) => {
   return (
     <>
       <div onClick={handleDisabledNote} className='fixed z-10 w-full h-full bg-gray-900 bg-opacity-10 lg:hidden'></div>
-
       <motion.aside
         onKeyDown={handleScape}
         className='absolute right-0 z-20 min-h-screen grid grid-rows-[auto,1fr] bg-gray-100 lg:relative w-[300px] md:w-[500px] lg:w-[700px] pb-5'
@@ -124,7 +123,7 @@ export const NoteScreen = ({ setViewJournal }) => {
 
                 <Steps viewAddStep={viewAddStep} steps={note.steps} setViewAddStep={setViewAddStep} />
                 {viewAddStep && (
-                  <button onClick={handleAddStep} className='px-4 py-1 mt-2 text-sm text-indigo-500'>
+                  <button type='button' onClick={handleAddStep} className='px-4 py-1 mt-2 text-sm text-indigo-500'>
                     Add Step
                   </button>
                 )}
@@ -166,7 +165,11 @@ export const NoteScreen = ({ setViewJournal }) => {
           </form>
         </div>
       </motion.aside>
-      <AnimatePresence>{viewImage && <VisorImage imgAmpliar={note.url} setViewImage={setViewImage} />}</AnimatePresence>
+      <AnimatePresence>
+        {
+          viewImage && <VisorImage imgAmpliar={note.url} setViewImage={setViewImage} />
+        }
+      </AnimatePresence>
     </>
   );
 };
