@@ -18,7 +18,7 @@ import { PublicRoute } from './PublicRoute'
 export const AppRouter = () => {
   const dispatch = useDispatch()
 
-  const [viewSideBar, setViewSideBar] = useState(false)
+  
   const [checking, setChecking] = useState(true)
   const [isLoggedIn, setIsLoggedIn] = useState(false)
 
@@ -44,21 +44,8 @@ export const AppRouter = () => {
       <Toaster />
       <Switch>
         <PublicRoute isAuthenticated={isLoggedIn} path='/auth' component={AuthRouter} />
-        <PrivateRoute isAuthenticated={isLoggedIn} exact path='/'>
-          <JournalScreen setViewSideBar={setViewSideBar} viewSideBar={viewSideBar} />
-        </PrivateRoute>
-        <PrivateRoute isAuthenticated={isLoggedIn} exact path='/my-day'>
-          <JournalScreen setViewSideBar={setViewSideBar} viewSideBar={viewSideBar} />
-        </PrivateRoute>
-        <PrivateRoute isAuthenticated={isLoggedIn} exact path='/important'>
-          <JournalScreen setViewSideBar={setViewSideBar} viewSideBar={viewSideBar} />
-        </PrivateRoute>
-        <PrivateRoute isAuthenticated={isLoggedIn} exact path='/tasks'>
-          <JournalScreen setViewSideBar={setViewSideBar} viewSideBar={viewSideBar} />
-        </PrivateRoute>
-        <PrivateRoute isAuthenticated={isLoggedIn} exact path='/:id'>
-          <JournalScreen setViewSideBar={setViewSideBar} viewSideBar={viewSideBar} />
-        </PrivateRoute>
+        <PrivateRoute isAuthenticated={isLoggedIn} exact path='/' component={JournalScreen} />
+        <PrivateRoute isAuthenticated={isLoggedIn} exact path='/:id' component={JournalScreen} />
         <Redirect to='/auth/login' />
       </Switch>
     </Router>

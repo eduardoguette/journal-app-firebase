@@ -11,8 +11,9 @@ import { ListNotes } from './ListNotes'
 import { NewJournal } from './NewJournal'
 import { SideBar } from './SideBar'
 
-export const JournalScreen = ({ setViewSideBar, viewSideBar }) => {
+export const JournalScreen = () => {
   const { notes } = useSelector((state) => state.notes)
+  const [viewSideBar, setViewSideBar] = useState(false)
   const { loading } = useSelector((state) => state.ui)
   const [viewJournal, setViewJournal] = useState(false)
 
