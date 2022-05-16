@@ -1,51 +1,66 @@
-import React, { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { BrowserRouter as Router, Redirect, Switch } from 'react-router-dom';
+import React, { useEffect, useState } from 'react'
+import { Toaster } from 'react-hot-toast'
+import { useDispatch } from 'react-redux'
+import { BrowserRouter as Router, Redirect, Switch } from 'react-router-dom'
+import { login } from '../actions/auth'
+import { startLoadingNotes } from '../actions/notes'
+import { JournalScreen } from '../components/journal/JournalScreen'
+import { Loader } from '../components/ui/Loader'
+import { firebase } from '../firebase/firebase-config'
+import { AuthRouter } from './AuthRouter'
+import { PrivateRoute } from './PrivateRoute'
+import { PublicRoute } from './PublicRoute'
 
-import { firebase } from '../firebase/firebase-config';
-import { JournalScreen } from '../components/journal/JournalScreen';
-import { AuthRouter } from './AuthRouter';
-import { login } from '../actions/auth';
-import { PrivateRoute } from './PrivateRoute';
-import { PublicRoute } from './PublicRoute';
-import { startLoadingNotes } from '../actions/notes';
-import { Loader } from '../components/ui/Loader';
-import toast, { Toaster } from 'react-hot-toast';
-
-
+/**
+ * It checks if the user is logged in, and if so, it renders the JournalScreen component. If not, it
+ * renders the AuthRouter component
+ */
 export const AppRouter = () => {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch()
 
-  const [checking, setChecking] = useState(true);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [viewSideBar, setViewSideBar] = useState(false)
+  const [checking, setChecking] = useState(true)
+  const [isLoggedIn, setIsLoggedIn] = useState(false)
 
   useEffect(() => {
     firebase.auth().onAuthStateChanged((user) => {
       if (user?.uid) {
-        dispatch(login(user.uid, user.displayName));
-        setIsLoggedIn(true);
-        dispatch(startLoadingNotes(user.uid));
+        dispatch(login(user.uid, user.displayName))
+        setIsLoggedIn(true)
+        dispatch(startLoadingNotes(user.uid))
       } else {
-        setIsLoggedIn(false);
+        setIsLoggedIn(false)
       }
-      setChecking(false);
-    });
-  }, [dispatch, setChecking, setIsLoggedIn]);
+      setChecking(false)
+    })
+  }, [dispatch, setChecking, setIsLoggedIn])
 
   if (checking) {
-    return <Loader />;
+    return <Loader />
   }
 
   return (
     <Router>
-      <Toaster/>
+      <Toaster />
       <Switch>
         <PublicRoute isAuthenticated={isLoggedIn} path='/auth' component={AuthRouter} />
-
-        <PrivateRoute isAuthenticated={isLoggedIn} exact path='/' component={JournalScreen} />
-
+        <PrivateRoute isAuthenticated={isLoggedIn} exact path='/'>
+          <JournalScreen setViewSideBar={setViewSideBar} viewSideBar={viewSideBar} />
+        </PrivateRoute>
+        <PrivateRoute isAuthenticated={isLoggedIn} exact path='/my-day'>
+          <JournalScreen setViewSideBar={setViewSideBar} viewSideBar={viewSideBar} />
+        </PrivateRoute>
+        <PrivateRoute isAuthenticated={isLoggedIn} exact path='/important'>
+          <JournalScreen setViewSideBar={setViewSideBar} viewSideBar={viewSideBar} />
+        </PrivateRoute>
+        <PrivateRoute isAuthenticated={isLoggedIn} exact path='/tasks'>
+          <JournalScreen setViewSideBar={setViewSideBar} viewSideBar={viewSideBar} />
+        </PrivateRoute>
+        <PrivateRoute isAuthenticated={isLoggedIn} exact path='/:id'>
+          <JournalScreen setViewSideBar={setViewSideBar} viewSideBar={viewSideBar} />
+        </PrivateRoute>
         <Redirect to='/auth/login' />
       </Switch>
     </Router>
-  );
-};
+  )
+}

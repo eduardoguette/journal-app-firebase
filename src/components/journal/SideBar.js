@@ -1,17 +1,40 @@
-import React from 'react'; 
-import { motion } from 'framer-motion';
-import hamburger from '../../assets/icons/hamburger.svg'; 
-import sun from '../../assets/icons/sun.svg';
-import plus from '../../assets/icons/plus.svg';
-import fav from '../../assets/icons/fav.svg';
-import home from '../../assets/icons/home.svg'; 
+import { motion } from 'framer-motion'
+import React, { useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { addList } from '../../actions/list'
+import hamburger from '../../assets/icons/hamburger.svg'
+import iconList from '../../assets/icons/iconlist.svg'
+import plus from '../../assets/icons/plus.svg'
+import { useForm } from '../../hooks/useForm'
+import { YourLists } from './YourLists'
 
 export const SideBar = ({ setViewSideBar, viewSideBar }) => {
+  const [newList, setNewList] = useState(false)
 
+  const [{ listProfile, id } = {}] = useSelector((state) => state.lists)
+
+  const dispatch = useDispatch()
+  const [formValues, handleInputChange, reset] = useForm({
+    new_list: '',
+  })
+
+  const { new_list } = formValues
+
+  const handleInputNewList = () => {
+    setNewList((v) => !v)
+  }
+
+  const handleAddNewList = (e) => {
+    e.preventDefault()
+    const newList = { name: new_list, path: `/${new_list}`, id: Date.now(), altImage: 'Icono list default', img: iconList }
+    dispatch(addList(id, [...listProfile, newList], newList))
+    setNewList((v) => !v)
+    reset()
+  }
 
   return (
     <>
-      <div onClick={() => setViewSideBar((prev) => !prev)} className='fixed top-0 z-10 w-full min-h-screen bg-gray-900 bg-opacity-50 md:hidden '></div>
+      <div className='fixed top-0 z-10 w-full min-h-screen bg-gray-900 bg-opacity-50 md:hidden '></div>
       <motion.aside
         className='shadow-md pt-3 left-0 top-0 min-h-screen z-20 bg-gray-100 min-w-[200px] md:min-w-[250px]  absolute lg:relative'
         initial={{ translateX: '-100%' }}
@@ -20,39 +43,29 @@ export const SideBar = ({ setViewSideBar, viewSideBar }) => {
         exit={{ translateX: '0' }}
       >
         <header className='flex items-center justify-between p-5 '>
-          <button onClick={() => setViewSideBar((prev) => !prev)}>
-            {viewSideBar && <img src={hamburger} alt='Icono de luna' className='w-6 h-6 -ml-1' />}
-          </button>
+          <button onClick={() => setViewSideBar((prev) => !prev)}>{viewSideBar && <img src={hamburger} alt='Icono de luna' className='w-6 h-6 -ml-1' />}</button>
         </header>
         <nav className=''>
           <ul className='flex flex-col'>
-            <li>
-              <button className='flex items-center w-full gap-2 px-4 py-3 text-sm transition-all ease-linear hover:bg-indigo-200'>
-                <img src={sun} alt='Icono sol' height={20} width={20} />
-                My day
-              </button>
-            </li>
-            <li>
-              <button className='flex items-center w-full gap-2 px-4 py-3 text-sm transition-all ease-linear hover:bg-indigo-200'>
-                <img src={fav} alt='Icono sol' height={20} width={20} />
-                Important
-              </button>
-            </li>
-            <li>
-              <button className='flex items-center w-full gap-2 px-4 py-3 text-sm transition-all ease-linear hover:bg-indigo-200'>
-                <img src={home} alt='Icono sol' height={20} width={20} />
-                Tasks
-              </button>
-            </li>
-            <li className=''>
-              <button className='flex items-center w-full gap-2 px-4 py-3 text-sm text-indigo-500 transition-all ease-linear'>
-                <img src={plus} alt='Icono sol' height={20} width={20} />
-                Nueva lista
-              </button>
-            </li>
+            <YourLists listProfile={listProfile} />
           </ul>
+          {!newList ? (
+            <button onClick={handleInputNewList} className='flex items-center w-full px-4 py-3 text-sm text-indigo-500 transition-all ease-linear'>
+              <img src={plus} alt='Icono sol' height={20} width={20} />
+              <span className='px-2 text-indigo-500'>New list</span>
+            </button>
+          ) : (
+            <form className='grid grid-cols-[auto,1fr]' onSubmit={handleAddNewList}>
+              <button type='submit' className='flex items-center py-3 pl-4 text-sm text-gray-400 transition-all ease-linear'>
+                <svg width='24' height='24' strokeWidth='1.5' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'>
+                  <path d='M6 12H12M18 12H12M12 12V6M12 12V18' stroke='currentColor' className='text-gray-400' strokeLinecap='round' strokeLinejoin='round' />
+                </svg>
+              </button>
+              <input name='new_list' value={new_list} onChange={handleInputChange} className='inline-flex w-full px-2 text-sm bg-transparent focus:outline-none' placeholder='Enter name a new list' />
+            </form>
+          )}
         </nav>
       </motion.aside>
     </>
-  );
-};
+  )
+}

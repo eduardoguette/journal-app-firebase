@@ -67,7 +67,7 @@ export const Step = ({ step, setViewAddStep, viewAddStep }) => {
       </div>
       <input
         onChange={handleStepChange}
-        className={`w-full px-2 py-3 text-sm font-light border border-transparent rounded-sm focus:outline-none focus:border-b focus:border-b-gray-100 ${done ? 'line-through text-gray-400' : "text-gray-600"}`}
+        className={`w-full px-2 py-3 text-sm border border-transparent rounded-sm focus:outline-none focus:border-b focus:border-b-gray-100 ${done ? 'line-through text-gray-400' : "text-gray-600"}`}
         placeholder='New Step'
         value={titleStep}
         name='step'
@@ -78,7 +78,7 @@ export const Step = ({ step, setViewAddStep, viewAddStep }) => {
         </button>
       )}
       {isExist() && (
-        <button type='button' onClick={handleDeleteStep} className='w-8 h-8 font-light text-gray-400 bg-white '>
+        <button type='button' onClick={handleDeleteStep} className='w-8 h-8 text-gray-400 bg-white '>
           &times;
         </button>
       )}

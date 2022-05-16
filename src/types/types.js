@@ -18,5 +18,9 @@ export const types = {
   notesPush: '[Notes] Push note',
   notesLogoutCleaning: '[Notes] Logout Cleaning',
 
+  listsAddNew: '[Lists] New list',
+  listsLoad: '[Lists] Load lists',
+  listsPush: '[Lists] Push list',
+  listsDelete: '[Lists] Delete list',
 
 }

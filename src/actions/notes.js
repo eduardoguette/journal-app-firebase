@@ -1,32 +1,39 @@
+ 
+import toast from 'react-hot-toast';
 import { db } from '../firebase/firebase-config';
 import { fileUpload } from '../helpers/fileUpload';
+import { loadLists } from '../helpers/loadLists';
 import { loadNotes } from '../helpers/loadNotes';
 import { types } from '../types/types';
+import { getLists, initLists } from './list';
 import { finishLoading, startLoading } from './ui';
-import toast from 'react-hot-toast';
+
+
+
 //react-journal
 
-export const startNewNote = (title) => {
+export const startNewNote = ({ title, list, important }) => {
   return async (dispatch, getState) => {
     const { uid } = getState().auth;
-
     const newNote = {
       title: title,
       body: '',
       date: new Date().getTime(),
       url: null,
       steps: [],
-      important: false,
-      category: [],
+      important,
+      category: null,
       done: false,
-    };
-
+      list: list,
+    }; 
     const doc = await db.collection(`${uid}/journal/notes`).add(newNote);
     toast.success('Saved succesfull!');
     dispatch(activeNote(doc.id, newNote));
     dispatch(pushNote({ ...newNote, id: doc.id }));
   };
 };
+
+
 
 // export const updateNote = () => {
 //   return async (dispatch, getState) => {
@@ -40,7 +47,6 @@ export const startNewNote = (title) => {
 // };
 
 export const activeNote = (id, note) => {
- 
   return {
     type: types.notesActive,
     payload: {
@@ -49,8 +55,6 @@ export const activeNote = (id, note) => {
     },
   };
 };
-
-
 
 export const disabledNote = () => {
   return {
@@ -62,7 +66,7 @@ export const startSaveNotes = (note) => {
   return async (dispatch, getState) => {
     const { uid } = getState().auth;
 
-    const noteToFireStore = { ...note };
+    const noteToFireStore = { ...note }; 
     try {
       await db.doc(`${uid}/journal/notes/${note.id}`).update(noteToFireStore);
       dispatch(refreshNote(note.id, noteToFireStore));
@@ -77,7 +81,13 @@ export const startLoadingNotes = (uid) => {
   return async (dispatch) => {
     dispatch(startLoading());
     const notes = await loadNotes(uid);
-    dispatch(setNotes(notes));
+    const lists = await loadLists(uid);
+    if(lists.length === 0){
+      dispatch(initLists());
+      
+    }
+    dispatch(getLists())
+    dispatch(setNotes(notes)); 
     dispatch(finishLoading());
   };
 };
@@ -107,6 +117,10 @@ export const pushNote = (note) => {
     },
   };
 };
+
+
+
+
 
 export const startUploading = (file) => {
   return async (dispatch, getState) => {

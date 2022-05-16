@@ -1,3 +1,9 @@
+/**
+ * It takes a file, creates a formData object, appends the file to the formData object, and then sends
+ * the formData object to the cloudinary API
+ * @param file - The file to upload.
+ * @returns The url of the image that was uploaded to cloudinary.
+ */
 export const fileUpload = async (file) => {
   const cloudUrl = `https://api.cloudinary.com/v1_1/dywna5g5o/upload`;
 

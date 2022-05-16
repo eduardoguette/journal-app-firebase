@@ -29,6 +29,7 @@ export const NoteScreen = ({ setViewJournal }) => {
   const noteId = useRef(note?.id);
 
   useEffect(() => {
+ 
     if (note?.id !== noteId.current) {
       reset(note);
       noteId.current = note?.id;
@@ -39,7 +40,7 @@ export const NoteScreen = ({ setViewJournal }) => {
     clearTimeout(saveTodos);
     if (note.title !== title || note.body !== body) {
       saveTodos = setTimeout(() => {
-        dispatch(startSaveNotes({ id: note.id, ...formValues, date: Date.now(), steps: [...note.steps] }));
+        dispatch(startSaveNotes({ id: note.id, ...formValues, date: Date.now(), steps: [...note.steps], ...note }));
       }, [1000]);
     }
     dispatch(activeNote(note?.id, { ...formValues, date: Date.now(), ...note }));
@@ -98,8 +99,8 @@ export const NoteScreen = ({ setViewJournal }) => {
         exit={{ translateX: '100%' }}
       >
         <HeaderNoteScreen {...{ handleDelete, setViewJournal, handleUpdateNote }} />
-        <div className=''>
-          <form className='flex flex-col w-full font-light' onSubmit={handleSubmit}>
+        <div>
+          <form className='flex flex-col w-full' onSubmit={handleSubmit}>
             <div className='flex flex-col w-11/12 py-2 mx-auto mt-2 '>
               <div className='flex flex-col items-start py-4 bg-white rounded '>
                 <div className='flex items-center w-full px-2'>
@@ -130,15 +131,15 @@ export const NoteScreen = ({ setViewJournal }) => {
               </div>
 
               <label className='flex flex-col justify-center w-full gap-2 px-4 py-4 mt-5 bg-white border border-transparent rounded focus-within:border-indigo-500'>
-                <textarea rows='15' name='body' placeholder='Add note' className='w-full text-sm font-light rounded-sm focus:outline-none ' onChange={handleInputChange} value={body}></textarea>
-                <p className='block mt-2 text-xs font-light'>
+                <textarea rows='15' name='body' placeholder='Add note' className='w-full text-sm rounded-sm focus:outline-none ' onChange={handleInputChange} value={body}></textarea>
+                <p className='block mt-2 text-xs'>
                   Saved <span>{timeSince(date)}</span>
                 </p>
               </label>
             </div>
             <div className='flex flex-col w-11/12 gap-4 p-4 mx-auto mt-5 text-gray-600 bg-white rounded hover:text-black'>
               {note?.url && (
-                <div className='flex items-center gap-2 text-xs font-light '>
+                <div className='flex items-center gap-2 text-xs '>
                   <div className='grid w-12 h-12 text-white bg-indigo-500 rounded-sm place-items-center '>
                     <img src={note.url} alt={`Imagen de la nota ${note.url}`} onClick={handleOpenImage} />
                   </div>
@@ -152,7 +153,7 @@ export const NoteScreen = ({ setViewJournal }) => {
                     <polyline points='9 15 12 12 15 15'></polyline>
                     <line x1='12' y1='12' x2='12' y2='21'></line>
                   </svg>
-                  <span className='w-full text-sm font-light cursor-pointer'>{!note?.url ? 'Add file' : 'Change file'}</span>
+                  <span className='w-full text-sm cursor-pointer'>{!note?.url ? 'Add file' : 'Change file'}</span>
                 </div>
                 <input
                   onChange={handleInputImage}
